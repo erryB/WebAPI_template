@@ -1,0 +1,22 @@
+# This pipeline runs when a PR is merged to the master branch.
+# It runs and deploys to the staging environment.
+
+trigger:
+  branches:
+    include: 
+    - master
+  paths:
+    exclude:
+    - README.md
+    - ArmTemplates/*
+    - Pipelines/*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: staging-infra-vg
+  - group: staging-app-vg
+
+extends:
+  template: app.yaml

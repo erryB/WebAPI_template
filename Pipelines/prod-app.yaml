@@ -1,0 +1,14 @@
+# This pipeline runs manually when changes are ready to be pushed to production.
+# It runs and deploys to the production environment.
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: prod-infra-vg
+  - group: prod-app-vg
+
+extends:
+  template: app.yaml

@@ -1,0 +1,172 @@
+
+parameters:
+  - name: Solution
+    type: string
+    default: '**/WebAPI.sln'
+  - name: BuildPlatform
+    type: string
+    default: 'Any CPU'
+  - name: BuildConfiguration
+    type: string
+    default: 'Release'
+  
+jobs:
+
+- job: CI
+  steps:
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: ${{ parameters.Solution }}
+      displayName: Restore solution
+
+    - task: VSBuild@1
+      inputs:
+        solution: ${{ parameters.Solution }}
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '${{ parameters.BuildPlatform}}'
+        configuration: '${{ parameters.BuildConfiguration }}'
+      displayName: Build solution
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: test
+        projects: '**/WebAPI.Tests/*.csproj'
+        arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=Cobertura /p:Exclude="[*Tests]*"'
+        publishTestResults: true
+        nobuild: true
+      displayName: Run unit tests
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: custom
+        custom: tool
+        arguments: install --tool-path . dotnet-reportgenerator-globaltool 
+      displayName: Install ReportGenerator Tool
+
+    - script: reportgenerator -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reports:"**/WebAPI.Tests/coverage.cobertura.xml" -reporttypes:Cobertura
+      displayName: Create Coverage Report
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml
+        reportDirectory: $(coverageResultsFolder)
+      displayName: Publish Coverage Results
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: test
+        projects: '**/WebAPI.IntegrationTests/*.csproj'
+        nobuild: true
+      displayName: Run integration tests
+
+- job: CD
+  dependsOn: CI
+  condition: succeeded()
+  steps:
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: ${{ parameters.Solution }}
+      displayName: Restore solution
+
+    - task: VSBuild@1
+      inputs:
+        solution: ${{ parameters.Solution }}
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '${{ parameters.BuildPlatform}}'
+        configuration: '${{ parameters.BuildConfiguration }}'
+      displayName: Build solution
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: publish
+        projects: '**/WebAPI/WebAPI.csproj'
+        publishWebProjects: False
+        arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+      displayName: Publish web api
+
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: $(AZURE_RM_SVC_CONNECTION)
+        appName: $(WEBAPPNAME)-backend
+        package: $(Build.ArtifactStagingDirectory)/**/*.zip
+      displayName: Deploy web api
+
+    - task: AzureAppServiceSettings@1
+      inputs:
+        azureSubscription: $(AZURE_RM_SVC_CONNECTION)
+        appName: $(WEBAPPNAME)-backend
+        resourceGroupName: $(RESOURCE_GROUP)
+        appSettings: |
+          [
+            {
+              "name": "AuthScheme",
+              "value": "$(authScheme)",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2C__Instance",
+              "value": "https://$(b2cAccountName).b2clogin.com",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2C__Domain",
+              "value": "$(b2cAccountName).onmicrosoft.com",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2C__ClientId",
+              "value": "$(b2cClientId)",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2C__SignUpSignInPolicyId",
+              "value": "$(b2cSignInPolicy)",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2B__Instance",
+              "value": "https://login.microsoftonline.com/",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2B__Domain",
+              "value": "$(b2bAccountName).onmicrosoft.com",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2B__ClientId",
+              "value": "$(b2bClientId)",
+              "slotSetting": false
+            },
+            {
+              "name": "AzureAdB2B__TenantId",
+              "value": "$(b2bTenantId)",
+              "slotSetting": false
+            },
+            {
+              "name": "InviteLandingPage",
+              "value": "$(webappUrl)",
+              "slotSetting": false
+            },
+            {
+              "name": "KeyVaultName",
+              "value": "$(keyVaultName)",
+              "slotSetting": false
+            }
+          ]
+        connectionStrings: |
+          [
+            {
+              "name": "DefaultConnection",
+              "value": "$(sqlConnectionString)",
+              "type": "SQLAzure",
+              "slotSetting": false
+            }
+          ]
+      displayName: Deploy appsettings

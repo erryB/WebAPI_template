@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{C6DB6596-EA43-46ED-93C5-BEFC12F4592F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Tests", "WebAPI.Tests\WebAPI.Tests.csproj", "{7C599B90-CBE9-47D0-B61B-94F205AEF1A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{238AB73E-1664-4036-8192-5B8E7F816641}"
+	ProjectSection(SolutionItems) = preProject
+		..\Postman\README.md = ..\Postman\README.md
+		..\Postman\WebApi.postman_collection.json = ..\Postman\WebApi.postman_collection.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.IntegrationTests", "WebAPI.IntegrationTests\WebAPI.IntegrationTests.csproj", "{B0562F3F-611C-496D-AC74-2B98BE00240E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{99195142-D5B3-432B-8C71-24AEC06C2B9B}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\database.png = ..\database.png
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplates", "{C601DC85-58EE-441C-995D-816F871FCD2E}"
+	ProjectSection(SolutionItems) = preProject
+		..\ArmTemplates\infrastructure-deploy.json = ..\ArmTemplates\infrastructure-deploy.json
+		..\ArmTemplates\postdeploy.sh = ..\ArmTemplates\postdeploy.sh
+		..\ArmTemplates\README.md = ..\ArmTemplates\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{446688F1-8419-4E94-805D-E0A381279BE4}"
+	ProjectSection(SolutionItems) = preProject
+		..\Pipelines\app.yaml = ..\Pipelines\app.yaml
+		..\Pipelines\dev-app.yaml = ..\Pipelines\dev-app.yaml
+		..\Pipelines\dev-infrastructure.yaml = ..\Pipelines\dev-infrastructure.yaml
+		..\Pipelines\infrastructure.yaml = ..\Pipelines\infrastructure.yaml
+		..\Pipelines\prod-app.yaml = ..\Pipelines\prod-app.yaml
+		..\Pipelines\prod-infrastructure.yaml = ..\Pipelines\prod-infrastructure.yaml
+		..\Pipelines\staging-app.yaml = ..\Pipelines\staging-app.yaml
+		..\Pipelines\staging-infrastructure.yaml = ..\Pipelines\staging-infrastructure.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReCaptchaClient", "ReCaptchaClient", "{4689B883-7F73-4A3D-B680-36CC2CE1DCBC}"
+	ProjectSection(SolutionItems) = preProject
+		ReCaptchaClient\index.html = ReCaptchaClient\index.html
+		ReCaptchaClient\index.js = ReCaptchaClient\index.js
+		ReCaptchaClient\package.json = ReCaptchaClient\package.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{208B21A2-2FED-4AF8-9913-41325F71A08D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{B9B97E70-654F-4086-86A6-DC20A6B751E9}"
+	ProjectSection(SolutionItems) = preProject
+		Rules\ProjectRuleSet.ruleset = Rules\ProjectRuleSet.ruleset
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6DB6596-EA43-46ED-93C5-BEFC12F4592F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DB6596-EA43-46ED-93C5-BEFC12F4592F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DB6596-EA43-46ED-93C5-BEFC12F4592F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DB6596-EA43-46ED-93C5-BEFC12F4592F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C599B90-CBE9-47D0-B61B-94F205AEF1A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C599B90-CBE9-47D0-B61B-94F205AEF1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C599B90-CBE9-47D0-B61B-94F205AEF1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C599B90-CBE9-47D0-B61B-94F205AEF1A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0562F3F-611C-496D-AC74-2B98BE00240E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0562F3F-611C-496D-AC74-2B98BE00240E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0562F3F-611C-496D-AC74-2B98BE00240E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0562F3F-611C-496D-AC74-2B98BE00240E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C6DB6596-EA43-46ED-93C5-BEFC12F4592F} = {208B21A2-2FED-4AF8-9913-41325F71A08D}
+		{7C599B90-CBE9-47D0-B61B-94F205AEF1A9} = {208B21A2-2FED-4AF8-9913-41325F71A08D}
+		{B0562F3F-611C-496D-AC74-2B98BE00240E} = {208B21A2-2FED-4AF8-9913-41325F71A08D}
+		{4689B883-7F73-4A3D-B680-36CC2CE1DCBC} = {208B21A2-2FED-4AF8-9913-41325F71A08D}
+		{B9B97E70-654F-4086-86A6-DC20A6B751E9} = {208B21A2-2FED-4AF8-9913-41325F71A08D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E848789-98E1-40EC-BDC3-667A15515D8B}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+# This pipeline runs when a PR is created to merge to the master branch.
+# It builds and deploys to the dev environment.
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: dev-infra-vg
+  - group: dev-app-vg
+
+extends:
+  template: app.yaml
